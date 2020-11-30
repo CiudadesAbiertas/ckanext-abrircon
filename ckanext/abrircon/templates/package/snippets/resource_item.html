@@ -1,0 +1,53 @@
+{% ckan_extends %}
+
+{% set url = h.url_for(controller='package', action='resource_read', id=pkg.name, resource_id=res.id) %}
+{% set is_cartodb_format = h.is_cartodb_format(res) %}
+{% set is_plotly_format = h.is_plotly_format(res) %}
+{% set is_geojson_io_format = h.is_geojson_io_format(res) %}
+{% set plotly_url = h.abrircon_plotly_url() %}
+{% set carto_url = h.abrircon_carto_url() %}
+{% set geojson_io_url = h.abrircon_geojson_io_url() %}
+
+{% block resource_item_explore %}
+{{ super() }}
+<!--
+Copyright 2018 Ayuntamiento de A Coruña, Ayuntamiento de Madrid, Ayuntamiento de Santiago de Compostela, Ayuntamiento de Zaragoza, Entidad Pública Empresarial Red.es
+
+This file is part of the CKAN "Abrir con" extension, developed within the "Ciudades Abiertas" project.
+
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission - subsequent versions of the EUPL (the "Licence");
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+https://joinup.ec.europa.eu/software/page/eupl
+
+Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the Licence for the specific language governing permissions and limitations under the Licence.
+-->
+
+<div class="dropdown btn-group2">
+	{% if is_plotly_format or is_cartodb_format or is_geojson_io_format %}
+    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-external-link"></i>
+      {{ _('abrir_con') }}
+      <span class="caret"></span>
+    </a>
+	<ul class="dropdown-menu">
+	{% endif %}
+    
+{% if is_plotly_format %}
+      <li class="plotly"><a href="{{ plotly_url }}{{ res.url }}" target="_blank"><span>{{ _('Plotly') }}</span></a></li>
+{% endif %}
+{% if is_cartodb_format %}
+      <li class="cartodb"><a href="{{ carto_url }}{{ res.url }}" target="_blank"><span>{{ _('Carto') }}</span></a></li>
+{% endif %}
+{% if is_geojson_io_format %}
+      <li class="geojson_io"><a href="{{ geojson_io_url }}{{ res.url }}" target="_blank"><span>{{ _('Geojson_io') }}</span></a></li>
+{% endif %}
+{% if is_plotly_format or is_cartodb_format or is_geojson_io_format %}
+	</ul>
+{% endif %}
+</div>
+{% endblock %}
+</li>
